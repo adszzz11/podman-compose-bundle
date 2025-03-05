@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-collector
+    restart: always
+    ports:
+      - 4317:4317
+      - 4318:4318
+#      - 55680:55680
+#      - 8888:8888 # Prometheus Exporter 포트 매핑
+    volumes:
+      - ./otel-collector/data/logs:/var/log/
+      - ./otel-collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    command: [ "--config", "/etc/otel-collector-config.yaml" ]
+    networks:
+      - t4y

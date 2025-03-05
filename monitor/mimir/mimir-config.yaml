@@ -1,0 +1,31 @@
+server:
+  http_listen_port: 9009  # HTTP 요청을 받을 포트 설정
+  grpc_listen_port: 9095  # gRPC 요청을 받을 포트 설정
+
+blocks_storage:
+  backend: filesystem  # 스토리지 백엔드를 파일 시스템으로 설정
+  filesystem:
+    dir: /data/mimir/blocks  # 데이터를 저장할 로컬 디렉토리 경로 지정
+
+compactor:
+  compaction_interval: 10m  # 블록 정리를 수행하는 간격 (10분)
+
+distributor:
+  ring:
+    kvstore:
+      store: memberlist  # 멤버 리스트 기반의 키-값 저장소 사용 (클러스터링)
+
+ingester:
+#  lifecycler:
+  ring:
+    kvstore:
+      store: memberlist  # 멤버 리스트 기반의 키-값 저장소 사용
+#  final_sleep: 0s  # 종료 전 대기 시간 없음
+
+ruler:
+  rule_path: /data/mimir/rules  # 룰을 저장할 로컬 디렉토리 경로 지정
+
+limits:
+  ingestion_rate: 2000  # 초당 허용되는 데이터 수집 속도
+  ingestion_burst_size: 4000  # 순간적으로 허용되는 최대 데이터 수집 크기
+#  max_series_per_user: 5000000  # 사용자당 저장 가능한 최대 시계열 개수

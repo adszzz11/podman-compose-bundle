@@ -1,0 +1,56 @@
+version: "3.7"
+
+name: monitor_core
+
+networks:
+  t4y:
+    external: true
+#   ipam:
+#     config:
+#      - subnet: 192.168.1.0/24
+
+
+services:
+####################GRAFANA#######################
+  grafana:
+    extends:
+      file: grafana/podman-compose.yaml
+      service: grafana
+####################GRAFANA#######################
+
+####################NODE_EXPORTER#################
+  node_exporter:
+    extends:
+      file: node-exporter/podman-compose.yaml
+      service: node_exporter
+####################NODE_EXPORTER#################
+
+####################OTEL_COLLECTOR#################
+  otel-collector:
+    extends:
+      file: otel-collector/podman-compose.yaml
+      service: otel-collector
+####################OTEL_COLLECTOR#################
+
+####################LOKI##########################
+  loki:
+    extends:
+      file: loki/podman-compose.yaml
+      service: loki
+####################LOKI##########################
+
+####################TEMPO#########################
+  tempo:
+    extends:
+      file: tempo/podman-compose.yaml
+      service: tempo
+####################TEMPO#########################
+
+
+####################MIMIR#########################
+  mimir:
+    extends:
+      file: mimir/podman-compose.yaml
+      service: mimir
+####################TEMPO#########################
+

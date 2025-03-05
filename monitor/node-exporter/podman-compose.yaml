@@ -1,0 +1,20 @@
+####################NODE_EXPORTER#################
+version: "3.7"
+
+services:
+  node_exporter:
+    image: bitnami/node-exporter
+    volumes:
+      - ./node-exporter/data/proc:/host/proc:ro
+      - ./node-exporter/data/sys:/host/sys:ro
+      - ./node-exporter/data/rootfs:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    networks:
+      - t4y
+####################NODE_EXPORTER#################

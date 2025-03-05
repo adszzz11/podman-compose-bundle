@@ -1,0 +1,44 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch: {}
+
+exporters:
+  otlphttp/loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
+    tls:
+      insecure: true
+#    labels:
+#      resource:
+#        container: "container.name"
+#        host: "host.name"
+#        service: "service.name"
+
+  otlphttp/tempo:
+    endpoint: "http://tempo:14318"  # Tempo OTLP 수신 포트
+    tls:
+      insecure: true
+
+  prometheusremotewrite:
+    endpoint: "http://mimir:9009/api/v1/push"
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/loki]
+
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/tempo]
+
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheusremotewrite]
